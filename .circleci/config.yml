@@ -13,6 +13,12 @@ jobs:
           name: Test Docker image
           command: |
             docker run -d -p 8080:8080 --name myapp myapp
+      - run:
+          name: Push Docker image
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker tag myapp $DOCKERHUB_USERNAME/myapp:latest
+            docker push $DOCKERHUB_USERNAME/myapp:latest
 workflows:
   version: 2
   build_and_test:
